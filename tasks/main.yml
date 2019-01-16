@@ -1,0 +1,21 @@
+---
+
+- name: Add datadog agent user dd-agent to www-data group
+  user:
+    name: "{{ datadog_agent_user_name }}"
+    append: yes
+    groups: "{{ nginx_user_group | default('www-data') }}"
+
+- name: Install datadog agent config for nginx
+  copy:
+    backup: yes
+    content: "{{ datadog_agent_nginx_config | to_nice_yaml }}"
+    mode: 0444
+    owner: "{{ datadog_agent_user_name }}"
+    group: "{{ datadog_agent_user_group }}"
+    dest: /etc/datadog-agent/conf.d/nginx.d/conf.yaml
+  register: install_agent_config
+
+- name: Restart Datadog agent
+  service: name=datadog-agent state=restarted
+  when: install_agent_config is changed

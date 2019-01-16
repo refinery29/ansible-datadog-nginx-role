@@ -1,0 +1,20 @@
+---
+# Set this if you're NOT using Ubuntu
+nginx_user_group:
+
+datadog_agent_user_name: dd-agent
+datadog_agent_user_group: dd-agent
+datadog_agent_nginx_config:
+  init_config: null
+    instances:
+        # Default, sample nginx configuration: https://docs.datadoghq.com/integrations/nginx/#prepare-nginx
+      - nginx_status_url: "{{ datadog_nginx_status_url | default('http://localhost:81/nginx_status/') }}"
+    logs:
+      - type: file
+        path: "{{ datadog_nginx_access_log_path | default('/var/log/nginx/access.log') }}"
+        service: nginx
+        source: nginx
+      - type: file
+        path: "{{ datadog_nginx_error_log_path | default('/var/log/nginx/error.log') }}"
+        service: nginx
+        source: nginx
