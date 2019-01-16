@@ -5,7 +5,7 @@ nginx_user_group:
 datadog_agent_user_name: dd-agent
 datadog_agent_user_group: dd-agent
 datadog_agent_nginx_config:
-  init_config: null
+    init_config: null
     instances:
         # Default, sample nginx configuration: https://docs.datadoghq.com/integrations/nginx/#prepare-nginx
       - nginx_status_url: "{{ datadog_nginx_status_url | default('http://localhost:81/nginx_status/') }}"
